@@ -9,4 +9,7 @@ sudo insmod tcp_probe_extra.ko
 
 [ after use ] : sudo rmmod tcp_probe_extra
 
+Output goes to /proc/net/tcpprobe
+
+
 
