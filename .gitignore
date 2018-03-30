@@ -1,0 +1,8 @@
+*.ko
+*.o
+*.swp
+*.cmd
+.tmp_versions/
+Module.symvers
+modules.order
+tcp_probe_extra.mod.c
