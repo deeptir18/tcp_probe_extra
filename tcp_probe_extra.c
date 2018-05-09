@@ -75,6 +75,8 @@ struct tcp_log {
     u32    ssthresh;
     u32    srtt;
     u32    retrans;
+    u32    bytes_acked;
+    u32	   mss;
 };
 
 static struct {
@@ -158,6 +160,8 @@ static void jtcp_rcv_established(struct sock *sk, struct sk_buff *skb,
             p->ssthresh = tcp_current_ssthresh(sk);
             p->srtt = tp->srtt_us >> 3;
 	    p->retrans = tp->total_retrans;
+	    p->bytes_acked = tp->bytes_acked;
+	    p->mss = tp->mss_cache;
 
             tcp_probe.head = (tcp_probe.head + 1) & (bufsize - 1);
         }
@@ -196,12 +200,12 @@ static int tcpprobe_sprint(char *tbuf, int n)
         = ktime_to_timespec(ktime_sub(p->tstamp, tcp_probe.start));
 
     return scnprintf(tbuf, n,
-            "%lu.%09lu %pISpc %pISpc %d %#x %#x %u %u %u %u %u %u\n",
+            "%lu.%09lu %pISpc %pISpc %d %#x %#x %u %u %u %u %u %u %u %u\n",
             (unsigned long)tv.tv_sec,
             (unsigned long)tv.tv_nsec,
             &p->src, &p->dst, p->length, p->snd_nxt, p->snd_una,
             p->snd_cwnd, p->ssthresh, p->snd_wnd, p->srtt, p->rcv_wnd,
- 	    p->retrans);
+ 	    p->retrans, p->bytes_acked, p->mss);
 }
 
 static ssize_t tcpprobe_read(struct file *file, char __user *buf,
