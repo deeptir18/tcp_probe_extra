@@ -1,4 +1,5 @@
-*.ko
+*.ko			# Exclude anything ending in .ko
+!tcp_probe_extra.ko	# Except for tcp_probe_extra.ko
 *.o
 *.swp
 *.cmd
